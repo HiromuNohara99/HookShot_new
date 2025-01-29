@@ -59,7 +59,7 @@ void CInput::Uninit()
 
 
 
-////キーボードの初期化処理
+   ////キーボードの初期化処理
 //HRESULT InitKeyboard(HINSTANCE hInstance, HWND hWnd)
 //{
 //	//DirectInputオブジェクトの生成
