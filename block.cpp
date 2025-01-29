@@ -1,4 +1,4 @@
-/*
+  /*
 *
 *	ƒuƒƒbƒN‚Ìˆ—[block.cpp]
 *	Author Nohara Hiromu 
