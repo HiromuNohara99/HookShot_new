@@ -9,6 +9,11 @@
 
 #include "main.h"
 
+#define MAX_CHAE (64)
+
+//文字列型を扱うための参考資料
+// https://zenn.dev/reputeless/books/standard-cpp-for-competitive-programming/viewer/string
+
 class CObjName
 {
 public:
@@ -18,8 +23,8 @@ public:
 	static void FlorSave(char* aTexture);
 	static char* FlorLoad(int nCnt);
 private:
-	static char m_ObjTexture[64][64];		//テクスチャの数
-	static char m_FlorTexture[64][64];
+	static char m_ObjTexture[MAX_CHAE][MAX_CHAE];		//テクスチャの数
+	static char m_FlorTexture[MAX_CHAE][MAX_CHAE];
 	static int m_ObjnCnt;
 	static int m_FlorCnt;
 };

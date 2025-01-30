@@ -1,5 +1,5 @@
 //==========================
-//	2D‚Ì‚â‚Â‚ÌŠÇ—
+//	2Dã®ã‚„ã¤ã®ç®¡ç†
 //==========================
 #include "object2D.h"
 #include "renderer.h"
@@ -7,26 +7,26 @@
 
 
 //===========================================
-//	ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+//	ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 //===========================================
 CObject2D::CObject2D(int nPriority)/*:CObject(nPriority)*/
 {
-	m_pTexturePolygon = nullptr;			//ƒeƒNƒXƒ`ƒƒ
-	m_pVtxBuffPolygon = nullptr;	//’¸“_
-	m_Animation = D3DXVECTOR2(0.0f, 0.0f);//ƒAƒjƒ[ƒVƒ‡ƒ“‚Ìmove
+	m_pTexturePolygon = nullptr;			//ãƒ†ã‚¯ã‚¹ãƒãƒ£
+	m_pVtxBuffPolygon = nullptr;			//é ‚ç‚¹
+	m_Animation = D3DXVECTOR2(0.0f, 0.0f);		//ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®move
 }
 
 
 //===========================================
-// ƒfƒXƒgƒ‰ƒNƒ^
+// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 //===========================================
-CObject2D::~CObject2D()
+CObject2D::â€¾CObject2D()
 {
 
 }
 
 //===========================================
-//@‰Šú‰»ˆ—
+//ã€€åˆæœŸåŒ–å‡¦ç†
 //===========================================
 HRESULT CObject2D::Init()
 {
@@ -34,7 +34,7 @@ HRESULT CObject2D::Init()
 
 	pDevice = CManager::GetRenederer()->GetDevice();
 
-	//’¸“_ƒoƒbƒtƒ@‚Ì¶¬
+	//é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã®ç”Ÿæˆ
 	pDevice->CreateVertexBuffer(sizeof(VERTEX_2D) * 4,
 		D3DUSAGE_WRITEONLY,
 		FVF_VERTEX_2D,
@@ -42,19 +42,19 @@ HRESULT CObject2D::Init()
 		&m_pVtxBuffPolygon,
 		NULL);
 
-	//ƒeƒNƒXƒ`ƒƒ“Ç‚İ‚İ
+	//ãƒ†ã‚¯ã‚¹ãƒãƒ£èª­ã¿è¾¼ã¿
 	D3DXCreateTextureFromFile(pDevice,
 		"",
 		&m_pTexturePolygon);
 
-	//SetFileTexture("data\\TEXTURE\\name.png");
+	//SetFileTexture("dataÂ¥Â¥TEXTUREÂ¥Â¥name.png");
 
-	m_size.x = SCREEN_WIDTH/2;
-	m_size.y = SCREEN_HEIGTH/2;
+	m_size.x = SCREEN_WIDTH / 2;
+	m_size.y = SCREEN_HEIGTH / 2;
 
-	VERTEX_2D* pVtx;	//’¸“_î•ñ‚Ö‚Ìƒ|ƒCƒ“ƒ^
+	VERTEX_2D* pVtx;	//é ‚ç‚¹æƒ…å ±ã¸ã®ãƒã‚¤ãƒ³ã‚¿
 
-		//’¸“_ƒoƒbƒtƒ@‚ğƒƒbƒN‚µA’¸“_î•ñ‚Ö‚Ìƒ|ƒCƒ“ƒ^‚ğæ“¾
+		//é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã‚’ãƒ­ãƒƒã‚¯ã—ã€é ‚ç‚¹æƒ…å ±ã¸ã®ãƒã‚¤ãƒ³ã‚¿ã‚’å–å¾—
 	m_pVtxBuffPolygon->Lock(0, 0, (void**)&pVtx, 0);
 	pVtx[0].pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	pVtx[1].pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
@@ -76,14 +76,14 @@ HRESULT CObject2D::Init()
 	pVtx[2].tex = D3DXVECTOR2(0.0f, 1.0f);
 	pVtx[3].tex = D3DXVECTOR2(1.0f, 1.0f);
 
-	//’¸“_ƒoƒbƒtƒ@‚ğƒAƒ“ƒƒbƒN
+	//é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã‚’ã‚¢ãƒ³ãƒ­ãƒƒã‚¯
 	m_pVtxBuffPolygon->Unlock();
 	
 	return S_OK;
 }
 
 //===========================================
-//@I—¹ˆ—
+//ã€€çµ‚äº†å‡¦ç†
 //===========================================
 void CObject2D::Uninit()
 {
@@ -92,7 +92,7 @@ void CObject2D::Uninit()
  		m_pTexturePolygon->Release();
  		m_pTexturePolygon = NULL;
 	}
-	//’¸“_ƒoƒbƒtƒ@‚Ì”jŠü
+	//é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã®ç ´æ£„
  	if (m_pVtxBuffPolygon != NULL)
 	{
 		m_pVtxBuffPolygon->Release();
@@ -102,13 +102,13 @@ void CObject2D::Uninit()
 }
 
 //===========================================
-//@XVˆ—
+//ã€€æ›´æ–°å‡¦ç†
 //===========================================
 void CObject2D::Update()
 {
-	VERTEX_2D* pVtx;	//’¸“_î•ñ‚Ö‚Ìƒ|ƒCƒ“ƒ^
+	VERTEX_2D* pVtx;	//é ‚ç‚¹æƒ…å ±ã¸ã®ãƒã‚¤ãƒ³ã‚¿
 
-	//’¸“_ƒoƒbƒtƒ@‚ğƒƒbƒN‚µA’¸“_î•ñ‚Ö‚Ìƒ|ƒCƒ“ƒ^‚ğæ“¾
+	//é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã‚’ãƒ­ãƒƒã‚¯ã—ã€é ‚ç‚¹æƒ…å ±ã¸ã®ãƒã‚¤ãƒ³ã‚¿ã‚’å–å¾—
 	m_pVtxBuffPolygon->Lock(0, 0, (void**)&pVtx, 0);
 
 	pVtx[0].pos = D3DXVECTOR3(m_pos.x - m_size.x, m_pos.y - m_size.y, 0.0f);
@@ -132,12 +132,12 @@ void CObject2D::Update()
 	pVtx[3].tex = D3DXVECTOR2(1.0f + m_Animation.x, 1.0f+ m_Animation.y);
 
 	
-	//’¸“_ƒoƒbƒtƒ@‚ğƒAƒ“ƒƒbƒN
+	//é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã‚’ã‚¢ãƒ³ãƒ­ãƒƒã‚¯
 	m_pVtxBuffPolygon->Unlock();
 }
 
 //===========================================
-//@•`‰æˆ—
+//ã€€æç”»å‡¦ç†
 //===========================================
 void CObject2D::Draw()
 {
@@ -145,30 +145,39 @@ void CObject2D::Draw()
 
 	CRenderer* pRenderer = nullptr;
 
-	//’¸“_ƒoƒbƒtƒ@‚ğƒf[ƒ^[ƒXƒgƒŠ[ƒ€‚Éİ’è
+	//é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã‚’ãƒ‡ãƒ¼ã‚¿ãƒ¼ã‚¹ãƒˆãƒªãƒ¼ãƒ ã«è¨­å®š
 	pDevice->SetStreamSource(0, m_pVtxBuffPolygon, 0, sizeof(VERTEX_2D));
-	//’¸“_[ƒ}ƒbƒg
+	//é ‚ç‚¹ãƒ¼ãƒãƒƒãƒˆ
 	pDevice->SetFVF(FVF_VERTEX_2D);
-	//ƒeƒNƒXƒ`ƒƒİ’è
+	//ãƒ†ã‚¯ã‚¹ãƒãƒ£è¨­å®š
 	pDevice->SetTexture(0, m_pTexturePolygon);
-	//ƒvƒŒƒCƒ„[‚Ì•`‰æ
-	pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);
+	//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®æç”»
+	pDevice->DrawPrimitive(
+		D3DPT_TRIANGLESTRIP,
+		0,
+		2);
 }
 
 
  //============================================
- // î•ñ‚Ìİ’è
+ // æƒ…å ±ã®è¨­å®š
  //============================================
 D3DXVECTOR3 CObject2D::GetPos()
  {
 	 return m_pos;
  }
 
+ //============================================
+ // ãƒ˜ãƒƒãƒ€ã‚³ãƒ¡ãƒ³ãƒˆ
+ //============================================
  void CObject2D::SetPos(D3DXVECTOR3 pos)
  {
 	 m_pos = pos;
  }
 
+ //============================================
+ // ãƒ˜ãƒƒãƒ€ã‚³ãƒ¡ãƒ³ãƒˆ
+ //============================================
  void CObject2D::SetSize(D3DXVECTOR2 size)
  {
 	 m_size = size;
@@ -176,19 +185,15 @@ D3DXVECTOR3 CObject2D::GetPos()
 
 
  //==================================
- //ƒAƒjƒ[ƒVƒ‡ƒ“‚Ì“®‚©‚µ
+ // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®å‹•ã‹ã—
  //==================================
- void CObject2D::SetAnimation(D3DXVECTOR2 Animation)	//ƒAƒjƒ[ƒVƒ‡ƒ“‚Ì“®‚©‚µ
+ void CObject2D::SetAnimation(D3DXVECTOR2 Animation)	//ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®å‹•ã‹ã—
  {
 	 m_Animation += Animation;
  }
 
- 
-
-
-
  //===========================================
-// Object2D‚Ì¶¬
+// Object2Dã®ç”Ÿæˆ
 //===========================================
  CObject2D* CObject2D::Create(D3DXVECTOR3 pos)
  {
@@ -202,7 +207,7 @@ D3DXVECTOR3 CObject2D::GetPos()
 
 
  //============================================
- //	ƒeƒNƒXƒ`ƒƒ‚Ìİ’è
+ //	ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®è¨­å®š
  //============================================
  void CObject2D::SetFileTexture(const char* sPath)
  {
@@ -210,7 +215,7 @@ D3DXVECTOR3 CObject2D::GetPos()
 
 	 pDevice = CManager::GetRenederer()->GetDevice();
 
-	 //ƒeƒNƒXƒ`ƒƒ“Ç‚İ‚İ
+	 //ãƒ†ã‚¯ã‚¹ãƒãƒ£èª­ã¿è¾¼ã¿
 	 D3DXCreateTextureFromFile(pDevice,
 		 sPath,
 		 &m_pTexturePolygon);

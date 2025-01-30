@@ -148,14 +148,19 @@ void CPlayer::PlayerAir()
 */
 void CPlayer::ControlNomal()
 {
+	// これ何？
 	m_rot.x = 0.0f;
-	D3DXVECTOR3* pPlayerPos = CModel::GetPos();		//プレイヤーの位置の情報
-	D3DXVECTOR3* pPlayerRot = CModel::GetRot();		//プレイヤーの位置の情報
+
+	//プレイヤーの位置の情報
+	D3DXVECTOR3* pPlayerPos = CModel::GetPos();
+	D3DXVECTOR3* pPlayerRot = CModel::GetRot();
+
 	//左スティックの入力情報を取得する
 	short sThumbLX = m_pJoypad->GetState(0)->Gamepad.sThumbLX;  //左右入力
 	short sThumbLY = m_pJoypad->GetState(0)->Gamepad.sThumbLY;  //上下入力
+
 	float fDire = atan2f(sThumbLX, sThumbLY);					//倒してる方向を計算する
-	
+
 	if (sqrtf(sThumbLX * sThumbLX + sThumbLY * sThumbLY) > 6000.0f)
 	{
 		if (fDire < 0.0f)
@@ -188,7 +193,7 @@ void CPlayer::ControlAir()
 {
 	CJoypad* m_pJoypad = CManager::GetJoypad();		//ゲームパッド
 	D3DXVECTOR3* pPlayerPos = CModel::GetPos();		//プレイヤーの位置の情報
-	CKeyboard* m_pKeyboard = CManager::GetKeyboard();   //キーボード
+	CKeyboard* m_pKeyboard = CManager::GetKeyboard();       //キーボード
 	D3DXVECTOR3* pPlayerRot = CModel::GetRot();		//プレイヤーの方向の情報
 	//左スティックの入力情報を取得する
 	short sThumbLX = m_pJoypad->GetState(0)->Gamepad.sThumbLX;   //左右入力
@@ -429,6 +434,3 @@ void CPlayer::ShootHook()
 		bHook = false;
 	}
 }
-
-
-

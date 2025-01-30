@@ -52,7 +52,6 @@ void CHook::Update()
 	D3DXVECTOR3* Rot = CModel::GetRot();
 	m_nLife--;
 	
-	
 	switch (m_State)
 	{
 	case HOOK_NORMAL:
@@ -77,7 +76,6 @@ void CHook::Update()
 	Pos->x += -m_move.x;
 	Pos->y += -m_move.y;
 	CModel::Update();
-
 }
 
 /**
