@@ -1,18 +1,17 @@
-//===================================================
+//===============================
 //
-//	florの処理[flor.cpp]
-// 
+// florの処理[flor.cpp]
 // Author Nohara Hiromu
 //
-//===================================================
+//===============================
 #include "flor.h"
 #include "manager.h"
 #include "ObjName.h"
 
 
-//===========================================
-//	コンストラクタ
-//===========================================
+//===============================
+// コンストラクタ
+//===============================
 CFlor::CFlor(int nPriority) :CObject(nPriority)
 {
 	m_pTexturePolygon = nullptr;			//テクスチャ
@@ -23,17 +22,17 @@ CFlor::CFlor(int nPriority) :CObject(nPriority)
 #define MAX_SIZE_X	15000
 #define MAX_SIZE_Y	15000
 
-//===========================================
+//===============================
 // デストラクタ
-//===========================================
+//===============================
 CFlor::~CFlor()
 {
 
 }
 
-//===========================================
-//　初期化処理
-//===========================================
+//===============================
+// 初期化処理
+//===============================
 HRESULT CFlor::Init()
 {
 	
@@ -41,10 +40,7 @@ HRESULT CFlor::Init()
 
 	pDevice = CManager::GetRenederer()->GetDevice();
 
-	char aString[64];
-
 	//strncpy(aString, CObjName::FlorLoad(m_nType), sizeof(aString) - 1);
-
 
 	//頂点バッファの生成
 	pDevice->CreateVertexBuffer(sizeof(VERTEX_3D) * 4,
@@ -91,9 +87,9 @@ HRESULT CFlor::Init()
 	return S_OK;
 }
 
-//===========================================
-//　終了処理
-//===========================================
+//===============================
+// 終了処理
+//===============================
 void CFlor::Uninit()
 {
 	if (m_pTexturePolygon != nullptr)
@@ -110,9 +106,9 @@ void CFlor::Uninit()
 
 }
 
-//===========================================
-//　更新処理
-//===========================================
+//===============================
+// 更新処理
+//===============================
 void CFlor::Update()
 {
 	VERTEX_3D* pVtx;	//頂点情報へのポインタ
@@ -146,9 +142,9 @@ void CFlor::Update()
 	m_pVtxBuffPolygon->Unlock();
 }
 
-//===========================================
-//　描画処理
-//===========================================
+//===============================
+// 描画処理
+//===============================
 void CFlor::Draw()
 {
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenederer()->GetDevice();
@@ -185,24 +181,9 @@ void CFlor::Draw()
 	pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);
 }
 
-
-//============================================
-// 情報の設定
-//============================================
-D3DXVECTOR3 CFlor::GetPos()
-{
-	return m_pos;
-}
-
-void CFlor::SetPos(D3DXVECTOR3 pos)
-{
-	m_pos = pos;
-}
-
-
-//===================================================
+//===============================
 //	位置の更新　　　　　　	
-//====================================================
+//===============================
 void  CFlor::UpdatePos(D3DXVECTOR3 move)
 {
 	//位置の更新
@@ -217,9 +198,9 @@ void  CFlor::UpdatePos(D3DXVECTOR3 move)
 	m_pVtxBuffPolygon->Unlock();
 }
 
-//===========================================
+//===============================
 // Object3Dの生成
-//===========================================
+//===============================
 CFlor* CFlor::Create(D3DXVECTOR3 pos,float Size,int nType)
 {
 	CFlor* pPolygon = new CFlor;
@@ -230,34 +211,4 @@ CFlor* CFlor::Create(D3DXVECTOR3 pos,float Size,int nType)
 	pPolygon->SetSize(Size);
 
 	return pPolygon;
-}
-
-
-
-int  CFlor::GetSize()
-{
-	return (int)m_fSize;
-}
-
-int CFlor::GetType()
-{
-	return m_nType;
-}
-
-
-
-/**
- * タイプ.
- */
-void CFlor::SetType(int nType)
-{
-	m_nType = nType;
-}
-
-/**
- * サイズ.
- */
-void CFlor::SetSize(float size)
-{
-	m_fSize = size;
 }

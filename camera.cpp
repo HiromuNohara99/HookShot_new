@@ -29,9 +29,9 @@ CCamera::~CCamera()
 
 }
 
-//==========================================
-//	初期化処理
-//===========================================
+//===============================
+// 初期化処理
+//===============================
 void CCamera::Init(void)
 {
 	m_vecU = D3DXVECTOR3(0.0f, 1.0f, 0.0f);		
@@ -60,7 +60,7 @@ void CCamera::Init(void)
 
 //===============================
 //　終了処理
-//==============================
+//===============================
 void CCamera::Uninit(void)
 {
 
@@ -69,7 +69,7 @@ float cameraHeightOffset = 100.0f;  // カメラの初期高さ
 //int g_nCnt = 0;
 //===============================
 //	更新処理
-//==============================
+//===============================
 void CCamera::Update(void)
 {
 	CJoypad* m_pJoypad = CManager::GetJoypad();		//ゲームパッド
@@ -156,7 +156,7 @@ void CCamera::Update(void)
 
 //===============================
 //	グローバル
-//==============================
+//===============================
 void CCamera::SetCamera(void)
 {
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenederer()->GetDevice();
@@ -193,10 +193,4 @@ void CCamera::SetCamera(void)
 
 	//ビューマトリックスの設定
 	pDevice->SetTransform(D3DTS_VIEW,&m_mtxView);
-}
-
-
-D3DXVECTOR3 CCamera::GetRot()
-{
-	return m_rot;
 }

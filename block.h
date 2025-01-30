@@ -19,8 +19,10 @@ public:
 	void Uninit()override;
 	void Update()override;
 	void Draw()override;
+
 	static CBlock* Create(D3DXVECTOR3 pos);
-	D3DXVECTOR3* GetMove();
+
+	D3DXVECTOR3* GetMove() { return &m_move; };
 
 private:
 	D3DXVECTOR3 m_move;

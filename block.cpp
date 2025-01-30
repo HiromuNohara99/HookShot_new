@@ -1,31 +1,30 @@
-  /*
-*
-*	ブロックの処理[block.cpp]
-*	Author Nohara Hiromu 
-* 
-*/
+//===============================
+//
+//ブロックの処理[block.cpp]
+// Author Nohara Hiromu 
+// 
+//===============================
 #include "block.h"
 
-/*
-*	コンストラクタ
-*/
+//===============================
+// コンストラクタ
+//===============================
 CBlock::CBlock()
 {
 
 }
 
-/**
- * .デストラクタ
- */
+//===============================
+// デストラクタ
+//===============================
 CBlock::~CBlock()
 {
 
 }
 
-
-/**
- * .初期化処理
- */
+//===============================
+// 初期化処理
+//===============================
 HRESULT CBlock::Init()
 {
 	SetFilePath("data\\MODEL\\block001.x");
@@ -33,17 +32,17 @@ HRESULT CBlock::Init()
 	return S_OK;
 }
 
-/**
- * .終了処理
- */
+//===============================
+// 終了処理
+//===============================
 void CBlock::Uninit()
 {
 	CModel::Uninit();
 }
 
-/**
- * .更新処理
- */
+//===============================
+// 更新処理
+//===============================
 void CBlock::Update()
 {
 	D3DXVECTOR3* Pos = CModel::GetPos();
@@ -52,18 +51,17 @@ void CBlock::Update()
 	CModel::Update();
 }
 
-
-/**
- * .描画処理
- */
+//===============================
+// 描画処理
+//===============================
 void CBlock::Draw()
 {
 	CModel::Draw();
 }
 
-/**
- * .生成処理
- */
+//===============================
+// 生成処理
+//===============================
 CBlock* CBlock::Create(D3DXVECTOR3 pos)
 {
 	CBlock* pBlock = new CBlock;
@@ -71,13 +69,4 @@ CBlock* CBlock::Create(D3DXVECTOR3 pos)
 	pBlock->SetPos(pos);
 	pBlock->SetType(TYPE_BLOCK);
 	return pBlock;
-}
-
-
-/**
- * .移動量の取得
- */
-D3DXVECTOR3* CBlock::GetMove()
-{
-	return &m_move;
 }
