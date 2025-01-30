@@ -220,4 +220,3 @@ CObject3D* CObject3D::Create(D3DXVECTOR3 pos)
 
 	return pPolygon;
 }
-

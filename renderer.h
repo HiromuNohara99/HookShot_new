@@ -36,5 +36,4 @@ private:
 	LPD3DXFONT m_pFont = nullptr;
 #endif
 };
-
 #endif

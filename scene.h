@@ -31,6 +31,4 @@ private:
 	SCENE m_Scene;									//åªç›ÇÃâÊñ ë@à€
 
 };
-
-
 #endif

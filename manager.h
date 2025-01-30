@@ -11,7 +11,6 @@
 #ifndef MANAGER_H_
 #define MANAGER_H_
 
-
 //=======================
 //ä«óùé“ÇÃê∂ê¨
 //=======================
@@ -44,5 +43,4 @@ private:
 	static CJoypad* m_pJoypad;
 
 };
-
 #endif

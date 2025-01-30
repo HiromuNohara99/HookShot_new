@@ -35,5 +35,4 @@ private:
 	D3DXVECTOR2 m_size;						//xyのサイズ
 	D3DXVECTOR2 m_Animation;				//アニメーションの動かし方
 };
-
 #endif

@@ -88,8 +88,3 @@ void CEnemy::SetEnemyType(ENEMY type)
 {
 	m_type = type;
 }
-
-
-
-
-

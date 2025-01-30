@@ -66,9 +66,4 @@ private:
 	bool bInertia;
 	static bool bHook;
 };
-
-
-
-
-
 #endif PLAYER_H_

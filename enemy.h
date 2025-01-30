@@ -35,6 +35,4 @@ private:
 	D3DXVECTOR3 m_move;
 
 };
-
 #endif // !ENEMY_H_
-

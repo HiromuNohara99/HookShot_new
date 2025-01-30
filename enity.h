@@ -29,6 +29,4 @@ public:
 private:
 	int m_nObjNum;					//オブジェクトの種類
 };
-
 #endif
-

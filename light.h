@@ -19,10 +19,4 @@ private:
 	D3DLIGHT9 m_aLight[3];
 
 };
-
-
-
-
-
 #endif
-

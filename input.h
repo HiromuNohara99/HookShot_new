@@ -28,6 +28,4 @@ protected:
 	LPDIRECTINPUTDEVICE8 m_pDevice;   //デバイス
 	static LPDIRECTINPUT8 m_pInput;   //入力
 };
-
-
 #endif

@@ -74,6 +74,4 @@ public:
 	D3DCOLOR col;
 	D3DXVECTOR2 tex;
 };
-
 #endif
-

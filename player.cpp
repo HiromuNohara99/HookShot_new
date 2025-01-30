@@ -429,6 +429,3 @@ void CPlayer::ShootHook()
 		bHook = false;
 	}
 }
-
-
-

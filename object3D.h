@@ -37,5 +37,4 @@ private:
 	D3DXVECTOR3 m_rot;
 	D3DXMATRIX m_mtxWorld;
 };
-
 #endif

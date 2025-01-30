@@ -59,5 +59,4 @@ private:
 	CObject* m_pNext;					//後のポインタ
 	bool m_bDeath;						//死亡フラグ
 };
-
 #endif

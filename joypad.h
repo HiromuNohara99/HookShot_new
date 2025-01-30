@@ -50,5 +50,4 @@ private:
 	XINPUT_STATE m_aStateTrigger[MAX];   //ƒgƒŠƒK[ó‘Ô
 	bool m_bButtonPressed[MAX];   //‰Ÿ‚³‚ê‚½‚©‚Ç‚¤‚©
 };
-
 #endif // !_JOYPAD_H_

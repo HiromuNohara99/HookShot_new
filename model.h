@@ -49,8 +49,4 @@ protected:
 	CKeyboard* m_pKeyboard;
 	
 };
-
-
-
-
 #endif

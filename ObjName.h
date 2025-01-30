@@ -23,7 +23,4 @@ private:
 	static int m_ObjnCnt;
 	static int m_FlorCnt;
 };
-
-
 #endif // OBJNAME_H_
-

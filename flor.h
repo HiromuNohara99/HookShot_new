@@ -38,5 +38,4 @@ private:
 	float m_fSize;					//ˆê‚Â‚Ì•Ó‚ÌƒTƒCƒY
 	int m_nType;
 };
-
 #endif // !FLOR_H_

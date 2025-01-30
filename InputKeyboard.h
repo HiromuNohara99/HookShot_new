@@ -24,7 +24,4 @@ private:
 	BYTE m_aState[MAX];   //ó‘Ô
 	BYTE m_aStateTrigger[MAX];   //ƒgƒŠƒK[ó‘Ô
 };
-
-
-
 #endif

@@ -66,4 +66,3 @@ char* CObjName::FlorLoad(int nCnt)
 
 	return m_FlorTexture[nNumber];
 }
-

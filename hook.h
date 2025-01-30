@@ -32,10 +32,4 @@ private:
 	int m_nLife;				//‘Ì—Í
 	HOOK m_State;				//ó‘Ô
 };
-
 #endif // !HOOK_H_
-
-
-
-
-

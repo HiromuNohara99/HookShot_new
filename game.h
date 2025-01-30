@@ -35,7 +35,4 @@ private:
 	static CObjName* m_ObjName;
 	
 };
-
 #endif
-
-
