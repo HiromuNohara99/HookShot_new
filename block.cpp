@@ -81,7 +81,3 @@ D3DXVECTOR3* CBlock::GetMove()
 {
 	return &m_move;
 }
-
-
-
-
