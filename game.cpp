@@ -6,12 +6,18 @@
 */
 #include "game.h"
 #include "player.h"
+#include "object2D.h"
 #include "object3D.h"
 #include "manager.h"
 #include "flor.h"
 #include "ObjName.h"
 #include "enity.h"
 #include "block.h"
+
+/**
+ * .静的メンバの初期化
+ */
+CObjName* CGame::m_ObjName = nullptr;
 
 //============================================
 //	コンストラクタ
@@ -34,10 +40,16 @@ CGame::~CGame()
 //============================================
 HRESULT CGame::Init()
 {
+	m_ObjName = new CObjName;
+	m_ObjName->Init();
+	//ステージのロード
 	Load();
 	CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
-	CBlock::Create(D3DXVECTOR3(-20.0f, 0.0f, 0.0f));
-	CFlor::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f),500.0f,0);
+	for (int nCnt = 0 ; nCnt < 10; nCnt++)
+	{
+		CBlock::Create(D3DXVECTOR3(60.0f*nCnt-30.0f, -50.0f, 0.0f));
+	}
+	
 	CScene::Init();
 
 	return S_OK;
@@ -48,10 +60,8 @@ HRESULT CGame::Init()
 //============================================
 void CGame::Uninit()
 {
-	//m_System->Uninit();
-	//delete m_System;
-	//m_System = nullptr;
-	//CScene::Uninit();
+	delete m_ObjName;
+	m_ObjName = nullptr;
 }
 
 //============================================
@@ -60,8 +70,6 @@ void CGame::Uninit()
 void CGame::Update()
 {
 	CKeyboard* m_pKeyboard = CManager::GetKeyboard();   //キーボード
-//	m_System->Update();
-
 	CScene::Update();
 }
 
@@ -73,14 +81,6 @@ void CGame::Draw()
 	CScene::Draw();
 	
 }
-
-/**.
- * システムの情報取得
- */
-//CSystem* CGame::GetSystem()
-//{
-//	return m_System;
-//}
 
 /**.
  *	ステージの読み込み

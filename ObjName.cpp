@@ -17,7 +17,7 @@ char CObjName::m_FlorTexture[64][64] = {};
  */
 void CObjName::Init()
 {
-	m_ObjTexture[64][0] = {};
+	m_ObjTexture[64][64] = {};
 	m_FlorTexture[64][64] = {};
 	m_ObjnCnt = 0;
 	m_FlorCnt = 0;

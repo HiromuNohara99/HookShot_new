@@ -9,7 +9,7 @@
 //===========================================
 //	コンストラクタ
 //===========================================
-CObject2D::CObject2D(int nPriority):CObject(nPriority)
+CObject2D::CObject2D(int nPriority)/*:CObject(nPriority)*/
 {
 	m_pTexturePolygon = nullptr;			//テクスチャ
 	m_pVtxBuffPolygon = nullptr;	//頂点
@@ -78,7 +78,7 @@ HRESULT CObject2D::Init()
 
 	//頂点バッファをアンロック
 	m_pVtxBuffPolygon->Unlock();
-
+	
 	return S_OK;
 }
 
@@ -121,10 +121,10 @@ void CObject2D::Update()
 	pVtx[2].rhw = 1.0f;
 	pVtx[3].rhw = 1.0f;
 
-	pVtx[0].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-	pVtx[1].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-	pVtx[2].col = D3DCOLOR_RGBA(255, 255, 255, 255);
-	pVtx[3].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+	pVtx[0].col = D3DCOLOR_RGBA(255, 255, 255, 25);
+	pVtx[1].col = D3DCOLOR_RGBA(255, 255, 255, 25);
+	pVtx[2].col = D3DCOLOR_RGBA(255, 255, 255, 25);
+	pVtx[3].col = D3DCOLOR_RGBA(255, 255, 255, 25);
 
 	pVtx[0].tex = D3DXVECTOR2(0.0f + m_Animation.x, 0.0f+ m_Animation.y);
 	pVtx[1].tex = D3DXVECTOR2(1.0f + m_Animation.x, 0.0f+ m_Animation.y);
@@ -194,9 +194,9 @@ D3DXVECTOR3 CObject2D::GetPos()
  {
 	 CObject2D* pPolygon = new CObject2D;
 	 pPolygon->Init();
+	 pPolygon->SetType(TYPE_NONE);
 	 pPolygon->SetPos(D3DXVECTOR3(SCREEN_WIDTH /2, SCREEN_HEIGTH /2, 0.0f));
-	 pPolygon->SetType(TYPE_PLAYER);
-
+	// pPolygon->SetFileTexture("data/TEXTURE/zone.png");
 	 return pPolygon;
  }
 

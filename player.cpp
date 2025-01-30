@@ -39,7 +39,6 @@ CPlayer::~CPlayer()
 */
 HRESULT CPlayer::Init()
 {
-	
 	SetFilePath("data\\MODEL\\player.x");
 	m_Status = PLAYER_AIR;
 	m_move = D3DXVECTOR3(0.0f, 0.0f,0.0f);
@@ -82,7 +81,6 @@ void CPlayer::Update()
 		break;
 	}
 
-
 	//重力の処理
 	if (m_Gravite == GRAVITE_NOMAL)
 	{
@@ -90,7 +88,7 @@ void CPlayer::Update()
 	}
 	else if (m_Gravite == GRAVITE_GRAVITE)
 	{
-		m_move.y += -1.0f;
+		m_move.y += -0.5f;
 	}
 	//移動量の更新
 	pPlayerPos->x += m_move.x;
@@ -121,60 +119,62 @@ void CPlayer::Draw()
 CPlayer* CPlayer::Create(D3DXVECTOR3 pos)
 {
 	CPlayer* pPlayer = new CPlayer;
-
 	pPlayer->Init();
 	pPlayer->SetType(TYPE_PLAYER);
 	pPlayer->SetPos(pos);
 	return pPlayer;
 }
 
-
-
 /*
 *	プレイヤーのノーマル状態
 */
 void CPlayer::PlayerNomal()
 {
-	//プレイヤーのコントロール
-	Control();
+	ControlNomal();
+}
+
+/**
+ * . プレイヤーの空中状態
+ */
+void CPlayer::PlayerAir()
+{
+	ControlAir();
 }
 
 /*
 *	プレイヤーのコントロール
 */
-void CPlayer::Control()
+void CPlayer::ControlNomal()
 {
 	m_rot.x = 0.0f;
 	D3DXVECTOR3* pPlayerPos = CModel::GetPos();		//プレイヤーの位置の情報
 	D3DXVECTOR3* pPlayerRot = CModel::GetRot();		//プレイヤーの位置の情報
-	CCamera* Camera = CManager::GetCamera();
-	D3DXVECTOR3 Rot = Camera->GetRot();
 	//左スティックの入力情報を取得する
 	short sThumbLX = m_pJoypad->GetState(0)->Gamepad.sThumbLX;  //左右入力
 	short sThumbLY = m_pJoypad->GetState(0)->Gamepad.sThumbLY;  //上下入力
 	float fDire = atan2f(sThumbLX, sThumbLY);					//倒してる方向を計算する
 	
-	if (sqrtf(sThumbLX * sThumbLX + sThumbLY * sThumbLY) > 6000)
+	if (sqrtf(sThumbLX * sThumbLX + sThumbLY * sThumbLY) > 6000.0f)
 	{
 		if (fDire < 0.0f)
 		{
 			m_move.x -= NORMAL_SPEED;
+			m_rot.y = 1.57f;
 		}
 		else if (fDire > 0.0f)
 		{
 			m_move.x += NORMAL_SPEED;
+			m_rot.y = -1.57f;
 		}
 	}
 
-	
 	if (m_pJoypad->GetTrigger(CJoypad::JOYKEY::JOYKEY_A, 0))	//ジャンプ
 	{	//ジャンプ
 		m_move.y += JUMP;
 		m_Status = PLAYER_AIR;
 	}
 
-	m_rot.z *= 0.9f;
-	m_rot.y = Rot.y + D3DX_PI * -1.0f;
+	
 	m_move.x += (0.0f - m_move.x) * 0.3f;
 	m_move.z += (0.0f - m_move.z) * 0.3f;
 }
@@ -182,15 +182,12 @@ void CPlayer::Control()
 /*
 *	プレイヤーの空中処理
 */
-void CPlayer::PlayerAir()
+void CPlayer::ControlAir()
 {
 	CJoypad* m_pJoypad = CManager::GetJoypad();		//ゲームパッド
 	D3DXVECTOR3* pPlayerPos = CModel::GetPos();		//プレイヤーの位置の情報
 	CKeyboard* m_pKeyboard = CManager::GetKeyboard();   //キーボード
 	D3DXVECTOR3* pPlayerRot = CModel::GetRot();		//プレイヤーの方向の情報
-	CCamera* Camera = CManager::GetCamera();
-	D3DXVECTOR3 Rot = Camera->GetRot();
-
 	//左スティックの入力情報を取得する
 	short sThumbLX = m_pJoypad->GetState(0)->Gamepad.sThumbLX;   //左右入力
 	short sThumbLY = m_pJoypad->GetState(0)->Gamepad.sThumbLY;   //上下入力
@@ -201,16 +198,17 @@ void CPlayer::PlayerAir()
 		if (fDire < 0.0f)
 		{
 			m_move.x -= NORMAL_SPEED;
+			m_rot.y = 1.57f;
 		}
 		else if (fDire > 0.0f)
 		{
 			m_move.x += NORMAL_SPEED;
+			m_rot.y = -1.57f;
 		}
 	}
 
-	m_rot.z *= 0.9f;
-	m_move.x += (0.0f - m_move.x) * 0.3f;
-	m_move.z += (0.0f - m_move.z) * 0.3f;
+	m_move.x += (0.0f - m_move.x) * 0.2f;
+	m_move.z += (0.0f - m_move.z) * 0.2f;
 }
 
 /*
@@ -406,10 +404,3 @@ void CPlayer::Collision()
 
 
 }
-
-
-
-
-
-
-

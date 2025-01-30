@@ -16,7 +16,7 @@ class CPlayer :public CModel
 {
 public:
 	//プレイヤーのスピード
-	const float NORMAL_SPEED = 5.0f;
+	const float NORMAL_SPEED = 2.0f;
 	const float LIFT_SPEED = 2.5f;
 	const float JUMP = 10.0f;
 	//プレイヤーの状態
@@ -41,16 +41,16 @@ public:
 	HRESULT Init()override;						
 	void Uninit()override;						
 	void Update()override;						
-	void Draw()override;						
-	void Control();								
+	void Draw()override;								
 	static CPlayer* Create(D3DXVECTOR3 pos);	
-	static void SetStatus(STATUS Status);
-	//当たり判定
-	void Collision();
-	//プレイヤーノーマル
+	static void SetStatus(STATUS Status);	//ステータスの情報設定
+	void Collision();	//当たり判定
+	//状態:ノーマル
 	void PlayerNomal();
-	//プレイヤー空中
+	void ControlNomal();
+	//状態:空中
 	void PlayerAir();
+	void ControlAir();
 
 private:
 	D3DXVECTOR3 m_move;							//移動量	

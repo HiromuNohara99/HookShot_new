@@ -9,6 +9,7 @@
 #define _GAME_H_
 
 #include "scene.h"
+#include "ObjName.h"
 //#include "system.h"
 
 //==========================================
@@ -31,7 +32,7 @@ private:
 	int m_nType;
 	int m_Num;
 	int m_FlorNum;			//テクスチャの種類のかず
-	//static CSystem* m_System;
+	static CObjName* m_ObjName;
 	
 };
 

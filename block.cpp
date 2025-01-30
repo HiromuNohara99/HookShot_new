@@ -48,7 +48,6 @@ void CBlock::Update()
 {
 	D3DXVECTOR3* Pos = CModel::GetPos();
 
-	m_move.x = 3.0f;
 	*Pos += m_move;
 	CModel::Update();
 }
