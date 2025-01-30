@@ -148,8 +148,8 @@ void CCamera::Update(void)
 		m_rot.y += 0.08f;
 	}	
 
-	m_posV.x = m_posR.x - sinf(m_rot.y) * 700.0f;
-	m_posV.z = m_posR.z - cosf(m_rot.y) * 700.0f;
+	m_posV.x = m_posR.x - sinf(m_rot.y) * 600.0f;
+	m_posV.z = m_posR.z - cosf(m_rot.y) * 600.0f;
 	m_posV.y = m_posR.y - sinf(m_rot.x) * 240.0f;
 //	m_posV.y += 100.0f;
 }

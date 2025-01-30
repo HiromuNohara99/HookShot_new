@@ -51,6 +51,9 @@ public:
 	//ó‘Ô:‹ó’†
 	void PlayerAir();
 	void ControlAir();
+	//ó‘Ô:‹¤’Ê
+	void ShootHook();
+	
 
 private:
 	D3DXVECTOR3 m_move;							//ˆÚ“®—Ê	
@@ -61,6 +64,7 @@ private:
 	static GRAVITE m_Gravite;					//d—Í‚Ìó‘Ô
 	static CJoypad* m_pJoypad;					//
 	bool bInertia;
+	static bool bHook;
 };
 
 

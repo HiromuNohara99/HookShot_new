@@ -12,12 +12,14 @@
 #include "enity.h"
 #include "object2D.h"
 #include "block.h"
+#include "hook.h"
 /*
 * 
 */
 CPlayer::STATUS CPlayer::m_Status = PLAYER_NOMAL;
 CPlayer::GRAVITE CPlayer::m_Gravite = GRAVITE_NOMAL;
 CJoypad* CPlayer::m_pJoypad = nullptr;
+bool CPlayer::bHook = false;
 /*
 *	コンストラクタ
 */
@@ -90,6 +92,7 @@ void CPlayer::Update()
 	{
 		m_move.y += -0.5f;
 	}
+	ShootHook();
 	//移動量の更新
 	pPlayerPos->x += m_move.x;
 	pPlayerPos->y += m_move.y;
@@ -111,7 +114,6 @@ void CPlayer::Draw()
 {
 	CModel::Draw();
 }
-
 
 /*
 *	生成処理
@@ -404,3 +406,29 @@ void CPlayer::Collision()
 
 
 }
+
+/**
+ * . フック発射に関して
+ */
+void CPlayer::ShootHook()
+{
+	D3DXVECTOR3* pPlayerPos = CModel::GetPos();		//プレイヤーの位置の情報
+	//左スティックの入力情報を取得する
+	short sThumbLX = m_pJoypad->GetState(0)->Gamepad.sThumbLX;   //左右入力
+	short sThumbLY = m_pJoypad->GetState(0)->Gamepad.sThumbLY;   //上下入力
+	//倒してる方向を計算する
+	float fDire = atan2f(sThumbLX, sThumbLY);
+	BYTE rtValue = m_pJoypad->GetState(0)->Gamepad.bRightTrigger;
+	if (rtValue > XINPUT_GAMEPAD_TRIGGER_THRESHOLD&&!bHook)
+	{
+		CHook::Create(*pPlayerPos, D3DXVECTOR3(fDire, fDire, fDire));
+		bHook = true;
+	}
+	else if (rtValue <= XINPUT_GAMEPAD_TRIGGER_THRESHOLD)
+	{
+		bHook = false;
+	}
+}
+
+
+

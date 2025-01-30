@@ -148,6 +148,7 @@
     <ClCompile Include="enity.cpp" />
     <ClCompile Include="flor.cpp" />
     <ClCompile Include="game.cpp" />
+    <ClCompile Include="hook.cpp" />
     <ClCompile Include="input.cpp" />
     <ClCompile Include="InputKeyboard.cpp" />
     <ClCompile Include="joypad.cpp" />
@@ -170,6 +171,7 @@
     <ClInclude Include="enity.h" />
     <ClInclude Include="flor.h" />
     <ClInclude Include="game.h" />
+    <ClInclude Include="hook.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="InputKeyboard.h" />
     <ClInclude Include="joypad.h" />
