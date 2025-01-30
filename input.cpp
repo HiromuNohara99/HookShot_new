@@ -7,7 +7,7 @@
 LPDIRECTINPUT8 CInput::m_pInput = nullptr;   //入力
 
 //-------------------
-//コンストラクタ
+// コンストラクタ
 //-------------------
 CInput::CInput()
 {
@@ -16,14 +16,14 @@ CInput::CInput()
 }
 
 //-------------------
-// //デストラクタ
+// デストラクタ
 //-------------------
 CInput::~CInput()
 {
 }
 
 //-------------------
-// //初期化処理
+// 初期化処理
 //-------------------
 HRESULT CInput::Init(HINSTANCE hInstance, HWND hWnd)
 {

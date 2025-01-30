@@ -34,7 +34,7 @@ public:
 	D3DXMATRIX* GetmtxWorld();
 	LPD3DXBUFFER* GetBuffMat();
 	DWORD* GetNumMat();
-	LPD3DXMESH* GetMesh();
+	LPD3DXMESH* GetMesh() { return &m_pMesh };
 protected:
 	LPD3DXMESH m_pMesh;			//í∏ì_ç¿ïW
 	LPD3DXBUFFER m_pBuffMat;

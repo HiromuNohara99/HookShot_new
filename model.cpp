@@ -125,12 +125,9 @@ void CModel::Draw()
 		m_pMesh->DrawSubset(nCntMat);
 	}
 
-
 	//マテリアルを戻す
 	pDevice->SetMaterial(&matDef);
 }
-
-
 
 //======================================
 //モデルの生成
@@ -144,7 +141,7 @@ CModel* CModel::Create()
 }
 
 
-D3DXVECTOR3 * CModel::GetPos()
+D3DXVECTOR3* CModel::GetPos()
 {
 	//座標を入手する
 	return &m_pos;
@@ -175,11 +172,6 @@ DWORD* CModel::GetNumMat()
 	return &m_nNumMat;
 }
 
-LPD3DXMESH* CModel::GetMesh()
-{
-	return &m_pMesh;
-}
-
 //==========================
 // 初期位置の設定
 //==========================
@@ -192,9 +184,6 @@ void CModel::SetRot(D3DXVECTOR3 rot)
 {
 	m_rot = rot;
 }
-
-
-
 
 //
 //どこのデータを読み込むか

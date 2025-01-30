@@ -19,6 +19,7 @@ public:
 	const float NORMAL_SPEED = 2.0f;
 	const float LIFT_SPEED = 2.5f;
 	const float JUMP = 10.0f;
+
 	//プレイヤーの状態
 	typedef enum
 	{
@@ -36,15 +37,19 @@ public:
 		GRAVITE_GRAVITE,
 	}GRAVITE;
 
-	CPlayer();									
-	~CPlayer() override;						
+	CPlayer();
+	~CPlayer() override;
+
 	HRESULT Init()override;						
 	void Uninit()override;						
 	void Update()override;						
-	void Draw()override;								
-	static CPlayer* Create(D3DXVECTOR3 pos);	
-	static void SetStatus(STATUS Status);	//ステータスの情報設定
+	void Draw()override;
+
+	static CPlayer* Create(D3DXVECTOR3 pos);
 	void Collision();	//当たり判定
+
+	static void SetStatus(STATUS Status);	//ステータスの情報設定
+						//
 	//状態:ノーマル
 	void PlayerNomal();
 	void ControlNomal();
@@ -53,7 +58,6 @@ public:
 	void ControlAir();
 	//状態:共通
 	void ShootHook();
-	
 
 private:
 	D3DXVECTOR3 m_move;							//移動量	
