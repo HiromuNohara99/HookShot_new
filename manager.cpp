@@ -9,10 +9,6 @@
 #include "InputKeyboard.h"
 #include "light.h"
 
-
-
-
-
 //Ã“Iƒƒ“ƒo‚Ì‰Šú‰»
 CRenderer* CManager::m_pRenderer = nullptr;
 CKeyboard* CManager::m_pKeyboard = nullptr;

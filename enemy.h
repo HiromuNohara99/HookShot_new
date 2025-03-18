@@ -11,7 +11,7 @@
 class CEnemy :public CModel
 {
 public:
-	const int MAX_LIFE_NOMAL = 30;
+	const int ENEMY_LIFE_NOMAL = 30;
 	typedef enum
 	{
 		ENENMY_NOMAL =0,

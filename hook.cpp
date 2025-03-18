@@ -1,30 +1,36 @@
-/*
-*
-*	フックショットの処理[hook.cpp]
-*	Author Nohara Hiromu
-* 
-*/
+//===============================
+//
+// フックショットの処理[hook.cpp]
+// Author Nohara Hiromu
+// 
+//===============================
 #include "hook.h"
+#include "player.h"
 
-/**
- * .コンストラクタ
- */
+//===============================
+// 静的メンバの初期化
+//===============================
+CHook::HOOK CHook::m_State = HOOK_NORMAL;
+
+//===============================
+// コンストラクタ
+//===============================
 CHook::CHook()
 {
 
 }
 
-/**
- * .デストラクタ
- */
+//===============================
+// デストラクタ
+//===============================
 CHook::~CHook()
 {
 
 }
 
-/**
- * .初期化 
- */
+//===============================
+// 初期化 
+//===============================
 HRESULT CHook::Init()
 {
 	SetFilePath("data/MODEL/hook.x");
@@ -35,23 +41,22 @@ HRESULT CHook::Init()
 	return S_OK;
 }
 
-/**
- * .終了処理
- */
+//===============================
+// 終了処理
+//===============================
 void CHook::Uninit()
 {
 	CModel::Uninit();
 }
 
-/**
- * .更新処理
- */
+//===============================
+// 更新処理
+//===============================
 void CHook::Update()
 {
 	D3DXVECTOR3* Pos = CModel::GetPos();
 	D3DXVECTOR3* Rot = CModel::GetRot();
 	m_nLife--;
-	
 	
 	switch (m_State)
 	{
@@ -68,35 +73,38 @@ void CHook::Update()
 		break;
 	}
 
-	if (m_nLife <= 0)
-	{	//体力なくなったら消える
-		/*Deathflag();*/
+
+	if (m_nLife <= 0&& m_State !=HOOK_FINISH)
+	{
 		m_State = HOOK_STOP;
+		CPlayer::SetStatus(CPlayer::PLAYER_HOOK);
 		return;
 	}
+
 	Pos->x += -m_move.x;
 	Pos->y += -m_move.y;
 	CModel::Update();
 
 }
 
-/**
- * .描画処理
- */
+//===============================
+// 描画処理
+//===============================
 void CHook::Draw()
 {
 	CModel::Draw();
 }
 
-/**
- * .生成処理
- */
+//===============================
+// 生成処理
+//===============================
 CHook* CHook::Create(D3DXVECTOR3 pos,D3DXVECTOR3 rot)
 {
 	CHook* pHook = new CHook;
 	pHook->Init();
 	pHook->SetPos(pos);
 	pHook->SetRot(rot);
+	pHook->SetType(TYPE_HOOK);
 
 	return pHook;
 }

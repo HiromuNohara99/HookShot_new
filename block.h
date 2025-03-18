@@ -22,7 +22,7 @@ public:
 
 	static CBlock* Create(D3DXVECTOR3 pos);
 
-	D3DXVECTOR3* GetMove() { return &m_move; };
+	D3DXVECTOR3* GetMove() { return &m_move; }
 
 private:
 	D3DXVECTOR3 m_move;

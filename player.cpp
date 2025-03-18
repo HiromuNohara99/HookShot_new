@@ -72,12 +72,13 @@ void CPlayer::Update()
 		m_Gravite = GRAVITE_NOMAL;
 		PlayerNomal();
 		break;
-	case PLAYER_HOOK:		//フックショット
-		m_Gravite = GRAVITE_NOMAL;
-		break;
 	case PLAYER_AIR:
 		m_Gravite = GRAVITE_GRAVITE;
 		PlayerAir();
+		break;
+	case PLAYER_HOOK:		//フックショット
+		m_Gravite = GRAVITE_NOMAL;
+		PlayerHook();
 		break;
 	default:
 		break;
@@ -143,9 +144,10 @@ void CPlayer::PlayerAir()
 	ControlAir();
 }
 
-/*
-*	プレイヤーのコントロール
-*/
+//===============================
+// プレイヤーのコントロール
+//===============================
+
 void CPlayer::ControlNomal()
 {
 	m_rot.x = 0.0f;
@@ -181,15 +183,14 @@ void CPlayer::ControlNomal()
 	m_move.z += (0.0f - m_move.z) * 0.3f;
 }
 
-/*
-*	プレイヤーの空中処理
-*/
+//===============================
+// プレイヤーの空中処理
+//===============================
 void CPlayer::ControlAir()
 {
-	CJoypad* m_pJoypad = CManager::GetJoypad();		//ゲームパッド
-	D3DXVECTOR3* pPlayerPos = CModel::GetPos();		//プレイヤーの位置の情報
-	CKeyboard* m_pKeyboard = CManager::GetKeyboard();   //キーボード
-	D3DXVECTOR3* pPlayerRot = CModel::GetRot();		//プレイヤーの方向の情報
+	//プレイヤーの情報取得
+	D3DXVECTOR3* pPlayerPos = CModel::GetPos();
+	D3DXVECTOR3* pPlayerRot = CModel::GetRot();
 	//左スティックの入力情報を取得する
 	short sThumbLX = m_pJoypad->GetState(0)->Gamepad.sThumbLX;   //左右入力
 	short sThumbLY = m_pJoypad->GetState(0)->Gamepad.sThumbLY;   //上下入力
@@ -213,12 +214,66 @@ void CPlayer::ControlAir()
 	m_move.z += (0.0f - m_move.z) * 0.2f;
 }
 
-/*
-*	ステータスの変更
-*/
-void CPlayer::SetStatus(STATUS Status)
+//===============================
+// プレイヤーのフック状態
+//===============================
+void CPlayer::PlayerHook()
 {
-	m_Status = Status;
+	PlayerHookMove();
+}
+
+//===============================
+// フック時の動き
+//===============================
+void CPlayer::PlayerHookMove()
+{
+	//フックショットの位置の取得
+	D3DXVECTOR3* Pos = GetHookPos();
+	//プレイヤーの位置取得
+	D3DXVECTOR3* pPlayerPos = CModel::GetPos();
+	//左スティックの入力情報を取得する
+	short sThumbLX = m_pJoypad->GetState(0)->Gamepad.sThumbLX;   //左右入力
+	short sThumbLY = m_pJoypad->GetState(0)->Gamepad.sThumbLY;   //上下入力
+	//倒してる方向を計算する
+	float fDire = atan2f(sThumbLX, sThumbLY);
+
+	//角度を求める
+	float Angle = atan2f(pPlayerPos->y- Pos->y, pPlayerPos->x - Pos->x);
+	float g = 9.81f;	//重力加速度(仮)
+	//単振り子の公式
+	float  a = -(g / 1000.0f) * sin(Angle + D3DX_PI * 0.5f);
+	
+	//フックショットの操作
+	if (sqrtf(sThumbLX * sThumbLX + sThumbLY * sThumbLY) > 6000.0f)
+	{
+		if (fabs(m_HookSpeed) < fabs(MAX_SPEED))
+		{
+			if (fDire > 0)
+			{
+				a += 0.05f;
+			}
+			else if (fDire < 0)
+			{
+				a += -0.05f;
+			}
+		}
+		else
+		{ //最大速度を越した場合
+			a += 0.00f;
+		}
+	}
+	
+	m_HookSpeed += a;											//角速度の更新
+	m_move.y = cosf(Angle) * m_HookSpeed * 10.0f;			//フックの動き
+	m_move.x = -sinf(Angle) * m_HookSpeed * 10.0f;			//フックの動き
+}
+
+//===============================
+// 引っ張られ時の動き
+//===============================
+void CPlayer::PlayerPull()
+{
+	
 }
 
 /*
@@ -402,9 +457,6 @@ void CPlayer::Collision()
 		}
 		pObj = pNext;
 	}
-	
-
-
 }
 
 /**
@@ -419,13 +471,52 @@ void CPlayer::ShootHook()
 	//倒してる方向を計算する
 	float fDire = atan2f(sThumbLX, sThumbLY);
 	BYTE rtValue = m_pJoypad->GetState(0)->Gamepad.bRightTrigger;
-	if (rtValue > XINPUT_GAMEPAD_TRIGGER_THRESHOLD&&!bHook)
+	if (rtValue > XINPUT_GAMEPAD_TRIGGER_THRESHOLD && !bHook)
 	{
 		CHook::Create(*pPlayerPos, D3DXVECTOR3(fDire, fDire, fDire));
 		bHook = true;
+
 	}
 	else if (rtValue <= XINPUT_GAMEPAD_TRIGGER_THRESHOLD)
-	{
-		bHook = false;
+	{		//離したときの処理
+		CObject* pObj = CObject::GetTop(3);
+		while (pObj != nullptr)
+		{
+			CObject* pNext = pObj->GetpNext();
+			CObject::TYPE type = pObj->GetType();
+			if (type == CObject::TYPE::TYPE_HOOK)
+			{
+				CHook* pHook = (CHook*)pObj;
+				pHook->Deathflag();
+				m_Status = PLAYER_NOMAL;
+				CHook::SetState(CHook::HOOK_FINISH);
+				bHook = false;
+				return;
+			}
+			pObj = pNext;
+		}
 	}
+}
+
+//===============================
+// フックショットの位置取得
+//===============================
+D3DXVECTOR3* CPlayer::GetHookPos()
+{
+	D3DXVECTOR3* Pos = {};
+	CObject* pObj = CObject::GetTop(3);
+	while (pObj != nullptr)
+	{
+		CObject* pNext = pObj->GetpNext();
+		CObject::TYPE type = pObj->GetType();
+
+		if (type == CObject::TYPE::TYPE_HOOK)
+		{
+			CHook* pHook = (CHook*)pObj;
+			 Pos = pHook->GetPos();
+		}
+		pObj = pNext;
+	}
+	return Pos;
+	
 }

@@ -33,7 +33,7 @@ HRESULT CEnemy::Init()
 
 	if (m_type == ENENMY_NOMAL)
 	{
-		m_Life = MAX_LIFE_NOMAL;
+		m_Life = ENEMY_LIFE_NOMAL;
 	}
 	CModel::Init();
 	return S_OK;

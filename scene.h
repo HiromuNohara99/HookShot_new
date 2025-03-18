@@ -26,7 +26,9 @@ public:
 	virtual void Uninit();
 	virtual void Update();
 	virtual void Draw();
+
 	static CScene* Create(SCENE scnene);			//ƒ‚ƒfƒ‹‚Ìæ“¾
+
 private:
 	SCENE m_Scene;									//Œ»İ‚Ì‰æ–Ê‘@ˆÛ
 

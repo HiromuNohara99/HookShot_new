@@ -45,7 +45,7 @@ HRESULT CGame::Init()
 	//ステージのロード
 	Load();
 	CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
-	for (int nCnt = 0 ; nCnt < 10; nCnt++)
+	for (int nCnt = 0 ; nCnt < 20; nCnt++)
 	{
 		CBlock::Create(D3DXVECTOR3(60.0f*nCnt-30.0f, -50.0f, 0.0f));
 	}
