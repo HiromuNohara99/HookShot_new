@@ -90,11 +90,6 @@ void CCamera::Update(void)
 			rot = *pPlayer->CModel::GetRot();
 			m_posR = pos;
 			m_posR.y = pos.y + 50.0f;
-		/*	m_posV.x = m_posR.x - sinf(rot.y) * 250.0f;
-			m_posV.z = m_posR.z - cosf(rot.y) * 250.0f;*/
-		/*	m_posV.x = m_posR.x - sinf(rot.y) * g_fDistance;
-			m_posV.z = m_posR.z - cosf(rot.y) * g_fDistance;*/
-
 		}
 		pObj = pNext;
 	}
@@ -139,10 +134,6 @@ void CCamera::Update(void)
 
 	}
 	
-
-//	m_vecU = D3DXVECTOR3(0.0f, 1.0f,0.0f );
-	
-
 	if (m_pKeyboard->GetPress(DIK_Z))
 	{
 		m_rot.y += 0.08f;
@@ -151,7 +142,7 @@ void CCamera::Update(void)
 	m_posV.x = m_posR.x - sinf(m_rot.y) * 600.0f;
 	m_posV.z = m_posR.z - cosf(m_rot.y) * 600.0f;
 	m_posV.y = m_posR.y - sinf(m_rot.x) * 240.0f;
-//	m_posV.y += 100.0f;
+
 }
 
 //===============================
@@ -169,15 +160,6 @@ void CCamera::SetCamera(void)
 		(float)SCREEN_WIDTH / (float)SCREEN_HEIGTH,
 		10.0f,
 		20000.0f);
-	
-	//	平行投影
-	/*D3DXMatrixOrthoLH(
-		&m_mtxProjection,
-		(float)SCREEN_WIDTH,
-		(float)SCREEN_HEIGTH,
-		10.0f,
-		5000.0f);*/
-	
 
 	//プロジェクションマトリックスの設定
 	pDevice->SetTransform(D3DTS_PROJECTION,

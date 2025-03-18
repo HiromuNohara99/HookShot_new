@@ -1,10 +1,9 @@
-//==========================================================
+//===============================
 //
-//	playerの処理[player.cpp]
-//	
+// playerの処理[player.cpp]	
 // Author Nohara Hiromu
 // 
-//==========================================================
+//===============================
 #include "player.h"
 #include "manager.h"
 #include "camera.h"
@@ -13,32 +12,32 @@
 #include "object2D.h"
 #include "block.h"
 #include "hook.h"
-/*
-* 
-*/
+//===============================
+//
+//===============================
 CPlayer::STATUS CPlayer::m_Status = PLAYER_NOMAL;
 CPlayer::GRAVITE CPlayer::m_Gravite = GRAVITE_NOMAL;
 CJoypad* CPlayer::m_pJoypad = nullptr;
 bool CPlayer::bHook = false;
-/*
-*	コンストラクタ
-*/
+//===============================
+// コンストラクタ
+//===============================
 CPlayer::CPlayer()
 {
 
 }
 
-/*
-*	デストラクタ
-*/
+//===============================
+// デストラクタ
+//===============================
 CPlayer::~CPlayer()
 {
 
 }
 
-/*
-*	初期化処理
-*/
+//===============================
+// 初期化処理
+//===============================
 HRESULT CPlayer::Init()
 {
 	SetFilePath("data\\MODEL\\player.x");
@@ -49,17 +48,17 @@ HRESULT CPlayer::Init()
 	return S_OK;
 }
 
-/*
-*	終了処理
-*/
+//===============================
+// 終了処理
+//===============================
 void CPlayer::Uninit()
 {
 	CModel::Uninit();
 }
 
-/*
-*	更新処理
-*/
+//===============================
+// 更新処理
+//===============================
 void CPlayer::Update()
 {
 	D3DXVECTOR3* pPlayerPos = CModel::GetPos();		//プレイヤーの位置の情報
@@ -108,17 +107,17 @@ void CPlayer::Update()
 	CModel::Update();
 }
 
-/*
-*　描画処理
-*/
+//===============================
+// 描画処理
+//===============================
 void CPlayer::Draw()
 {
 	CModel::Draw();
 }
 
-/*
-*	生成処理
-*/
+//===============================
+// 生成処理
+//===============================
 CPlayer* CPlayer::Create(D3DXVECTOR3 pos)
 {
 	CPlayer* pPlayer = new CPlayer;
@@ -128,17 +127,17 @@ CPlayer* CPlayer::Create(D3DXVECTOR3 pos)
 	return pPlayer;
 }
 
-/*
-*	プレイヤーのノーマル状態
-*/
+//===============================
+// プレイヤーのノーマル状態
+//===============================
 void CPlayer::PlayerNomal()
 {
 	ControlNomal();
 }
 
-/**
- * . プレイヤーの空中状態
- */
+//===============================
+// プレイヤーの空中状態
+//===============================
 void CPlayer::PlayerAir()
 {
 	ControlAir();
@@ -147,12 +146,12 @@ void CPlayer::PlayerAir()
 //===============================
 // プレイヤーのコントロール
 //===============================
-
 void CPlayer::ControlNomal()
 {
 	m_rot.x = 0.0f;
 	D3DXVECTOR3* pPlayerPos = CModel::GetPos();		//プレイヤーの位置の情報
 	D3DXVECTOR3* pPlayerRot = CModel::GetRot();		//プレイヤーの位置の情報
+	CKeyboard* m_pKeyboard = CManager::GetKeyboard();   //キーボード
 	//左スティックの入力情報を取得する
 	short sThumbLX = m_pJoypad->GetState(0)->Gamepad.sThumbLX;  //左右入力
 	short sThumbLY = m_pJoypad->GetState(0)->Gamepad.sThumbLY;  //上下入力
@@ -178,7 +177,17 @@ void CPlayer::ControlNomal()
 		m_Status = PLAYER_AIR;
 	}
 
-	
+	if (m_pKeyboard->GetPress(DIK_D))
+	{
+		m_move.x += NORMAL_SPEED;
+		m_rot.y = -1.57f;
+	}
+	if (m_pKeyboard->GetPress(DIK_A))
+	{
+		m_move.x += -NORMAL_SPEED;
+		m_rot.y = 1.57f;
+	}
+
 	m_move.x += (0.0f - m_move.x) * 0.3f;
 	m_move.z += (0.0f - m_move.z) * 0.3f;
 }
@@ -276,9 +285,9 @@ void CPlayer::PlayerPull()
 	
 }
 
-/*
-*	当たり判定(xz
-*/
+//===============================
+// 当たり判定(xz
+//===============================
 void CPlayer::Collision()
 {
 	D3DXVECTOR3* pPlayerPos = CModel::GetPos();		//プレイヤーの位置の情報
