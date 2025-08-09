@@ -29,7 +29,7 @@ HRESULT CEnemy::Init()
 {
 	m_pos = CModel::GetPos();
 	m_rot = CModel::GetRot();
-	SetFilePath("data\\MODEL\\octopas.x");
+	SetFilePath("data\\MODEL\\woodenbox.x");
 
 	if (m_type == ENENMY_NOMAL)
 	{
@@ -68,13 +68,13 @@ void CEnemy::Draw()
 //===============================
 // ¶¬ˆ—
 //===============================
-CEnemy* CEnemy::Create(D3DXVECTOR3 pos, ENEMY type)
+CEnemy* CEnemy::Create(D3DXVECTOR3 pos)
 {
 	CEnemy* pEnemy = new CEnemy;
 	pEnemy -> Init();
 	pEnemy->SetType(TYPE_ENEMY);
 	pEnemy->SetPos(pos);
-	pEnemy -> SetEnemyType(type);
+	//pEnemy -> SetEnemyType(type);
 
 	return pEnemy;
 }

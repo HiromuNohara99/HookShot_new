@@ -12,6 +12,8 @@
 #include "object2D.h"
 #include "block.h"
 #include "hook.h"
+#include "player_nomal.h"
+#include "player_air.h"
 //===============================
 //
 //===============================
@@ -19,6 +21,13 @@ CPlayer::STATUS CPlayer::m_Status = PLAYER_NOMAL;
 CPlayer::GRAVITE CPlayer::m_Gravite = GRAVITE_NOMAL;
 CJoypad* CPlayer::m_pJoypad = nullptr;
 bool CPlayer::bHook = false;
+CPlayer_Nomal* CPlayer::m_pPlayer_Nomal = nullptr;
+CPlayer_Air* CPlayer::m_pPlayer_Air = nullptr;
+
+const  float CPlayer::NORMAL_SPEED = 1.0f;
+const  float CPlayer::LIFT_SPEED = 2.5f;
+const  float CPlayer::JUMP = 10.0f;
+const  float CPlayer::MAX_SPEED = 1.0f;		//スピードの限界
 //===============================
 // コンストラクタ
 //===============================
@@ -32,7 +41,8 @@ CPlayer::CPlayer()
 //===============================
 CPlayer::~CPlayer()
 {
-
+	delete m_pPlayer_Nomal;
+	m_pPlayer_Nomal = nullptr;
 }
 
 //===============================
@@ -44,6 +54,13 @@ HRESULT CPlayer::Init()
 	m_Status = PLAYER_AIR;
 	m_move = D3DXVECTOR3(0.0f, 0.0f,0.0f);
 	m_pJoypad = CManager::GetJoypad();					//ゲームパッド
+
+	m_pPlayer_Nomal = new CPlayer_Nomal();
+	m_pPlayer_Nomal->Init();
+
+	m_pPlayer_Air = new CPlayer_Air();
+	m_pPlayer_Air->Init();
+
 	CModel::Init();
 	return S_OK;
 }
@@ -61,50 +78,27 @@ void CPlayer::Uninit()
 //===============================
 void CPlayer::Update()
 {
-	D3DXVECTOR3* pPlayerPos = CModel::GetPos();		//プレイヤーの位置の情報
-	m_oldpos = *pPlayerPos;							//元居た場所を更新
-	D3DXVECTOR3* pPlayerRot = CModel::GetRot();		//プレイヤーの方向の情報
-	CKeyboard* m_pKeyboard = CManager::GetKeyboard();   //キーボード
 	switch (m_Status)
 	{
-	case PLAYER_NOMAL:		//ノーマル状態
-		m_Gravite = GRAVITE_NOMAL;
-		PlayerNomal();
+	case PLAYER_NOMAL:
+		m_pPlayer_Nomal->Update(this);
 		break;
 	case PLAYER_AIR:
-		m_Gravite = GRAVITE_GRAVITE;
-		PlayerAir();
+		m_pPlayer_Air->Update(this);
 		break;
-	case PLAYER_HOOK:		//フックショット
-		m_Gravite = GRAVITE_NOMAL;
+	case PLAYER_HOOK:
 		PlayerHook();
 		break;
 	default:
 		break;
 	}
 
-	//重力の処理
-	if (m_Gravite == GRAVITE_NOMAL)
-	{
-		m_move.y += 0.0f;
-	}
-	else if (m_Gravite == GRAVITE_GRAVITE)
-	{
-		m_move.y += -0.5f;
-	}
 	ShootHook();
-	//移動量の更新
-	pPlayerPos->x += m_move.x;
-	pPlayerPos->y += m_move.y;
-	pPlayerPos->z += m_move.z;
 
-	Collision();
-
-	//方向の調整
-	pPlayerRot->x = m_rot.x;
-	pPlayerRot->y = m_rot.y;
-	pPlayerRot->z = m_rot.z;
 	CModel::Update();
+
+	//当たり判定
+	Collision();
 }
 
 //===============================
@@ -125,102 +119,6 @@ CPlayer* CPlayer::Create(D3DXVECTOR3 pos)
 	pPlayer->SetType(TYPE_PLAYER);
 	pPlayer->SetPos(pos);
 	return pPlayer;
-}
-
-//===============================
-// プレイヤーのノーマル状態
-//===============================
-void CPlayer::PlayerNomal()
-{
-	ControlNomal();
-}
-
-//===============================
-// プレイヤーの空中状態
-//===============================
-void CPlayer::PlayerAir()
-{
-	ControlAir();
-}
-
-//===============================
-// プレイヤーのコントロール
-//===============================
-void CPlayer::ControlNomal()
-{
-	m_rot.x = 0.0f;
-	D3DXVECTOR3* pPlayerPos = CModel::GetPos();		//プレイヤーの位置の情報
-	D3DXVECTOR3* pPlayerRot = CModel::GetRot();		//プレイヤーの位置の情報
-	CKeyboard* m_pKeyboard = CManager::GetKeyboard();   //キーボード
-	//左スティックの入力情報を取得する
-	short sThumbLX = m_pJoypad->GetState(0)->Gamepad.sThumbLX;  //左右入力
-	short sThumbLY = m_pJoypad->GetState(0)->Gamepad.sThumbLY;  //上下入力
-	float fDire = atan2f(sThumbLX, sThumbLY);					//倒してる方向を計算する
-	
-	if (sqrtf(sThumbLX * sThumbLX + sThumbLY * sThumbLY) > 6000.0f)
-	{
-		if (fDire < 0.0f)
-		{
-			m_move.x -= NORMAL_SPEED;
-			m_rot.y = 1.57f;
-		}
-		else if (fDire > 0.0f)
-		{
-			m_move.x += NORMAL_SPEED;
-			m_rot.y = -1.57f;
-		}
-	}
-
-	if (m_pJoypad->GetTrigger(CJoypad::JOYKEY::JOYKEY_A, 0))	//ジャンプ
-	{	//ジャンプ
-		m_move.y += JUMP;
-		m_Status = PLAYER_AIR;
-	}
-
-	if (m_pKeyboard->GetPress(DIK_D))
-	{
-		m_move.x += NORMAL_SPEED;
-		m_rot.y = -1.57f;
-	}
-	if (m_pKeyboard->GetPress(DIK_A))
-	{
-		m_move.x += -NORMAL_SPEED;
-		m_rot.y = 1.57f;
-	}
-
-	m_move.x += (0.0f - m_move.x) * 0.3f;
-	m_move.z += (0.0f - m_move.z) * 0.3f;
-}
-
-//===============================
-// プレイヤーの空中処理
-//===============================
-void CPlayer::ControlAir()
-{
-	//プレイヤーの情報取得
-	D3DXVECTOR3* pPlayerPos = CModel::GetPos();
-	D3DXVECTOR3* pPlayerRot = CModel::GetRot();
-	//左スティックの入力情報を取得する
-	short sThumbLX = m_pJoypad->GetState(0)->Gamepad.sThumbLX;   //左右入力
-	short sThumbLY = m_pJoypad->GetState(0)->Gamepad.sThumbLY;   //上下入力
-	//倒してる方向を計算する
-	float fDire = atan2f(sThumbLX, sThumbLY);
-	if (sqrtf(sThumbLX * sThumbLX + sThumbLY * sThumbLY) > 6000)
-	{
-		if (fDire < 0.0f)
-		{
-			m_move.x -= NORMAL_SPEED;
-			m_rot.y = 1.57f;
-		}
-		else if (fDire > 0.0f)
-		{
-			m_move.x += NORMAL_SPEED;
-			m_rot.y = -1.57f;
-		}
-	}
-
-	m_move.x += (0.0f - m_move.x) * 0.2f;
-	m_move.z += (0.0f - m_move.z) * 0.2f;
 }
 
 //===============================
@@ -292,6 +190,7 @@ void CPlayer::Collision()
 {
 	D3DXVECTOR3* pPlayerPos = CModel::GetPos();		//プレイヤーの位置の情報
 	D3DXVECTOR3* pPlayerCenter = CModel::GetCenterPos();		//プレイヤーの直径の大きさ
+	D3DXVECTOR3* pPlayerMove = CModel::GetMove();
 	m_Status = PLAYER_AIR;
 	CObject* pObj = CObject::GetTop(3);
 	while (pObj != nullptr)
@@ -324,7 +223,8 @@ void CPlayer::Collision()
 					{
 						pPlayerPos->y = ObjPos->y + CenterObjPos->y * 0.5f + pPlayerCenter->y * 0.5f;
 						m_Status = PLAYER_NOMAL;
-						m_move.y = 0.0f;
+						pPlayerMove->y = 0.0f;
+						
 					}
 					//zの当たり判定
 					if (pPlayerPos->x + pPlayerCenter->x * 0.5f > ObjPos->x - CenterObjPos->x * 0.5f
@@ -394,7 +294,7 @@ void CPlayer::Collision()
 					{
 						pPlayerPos->y = ObjPos->y + CenterObjPos->y * 0.5f + pPlayerCenter->y * 0.5f;
 						m_Status = PLAYER_NOMAL;
-						m_move.y = 0.0f;
+						pPlayerMove->y = 0.0f;
 					}
 					//zの当たり判定
 					if (pPlayerPos->x + pPlayerCenter->x * 0.5f > ObjPos->x - CenterObjPos->x * 0.5f
@@ -466,6 +366,7 @@ void CPlayer::Collision()
 		}
 		pObj = pNext;
 	}
+	m_oldpos = *pPlayerPos;							//元居た場所を更新
 }
 
 /**
@@ -487,7 +388,7 @@ void CPlayer::ShootHook()
 
 	}
 	else if (rtValue <= XINPUT_GAMEPAD_TRIGGER_THRESHOLD)
-	{		//離したときの処理
+	{ //離したときの処理
 		CObject* pObj = CObject::GetTop(3);
 		while (pObj != nullptr)
 		{
@@ -528,4 +429,15 @@ D3DXVECTOR3* CPlayer::GetHookPos()
 	}
 	return Pos;
 	
+}
+
+//実験
+POINT Pointer;
+POINT m_oldPointer;
+//===============================
+// フックショットの位置取得
+//===============================
+void CPlayer::MouseP()
+{
+	GetCursorPos(&Pointer);
 }

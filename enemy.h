@@ -25,7 +25,10 @@ public:
 	void Uninit()override;
 	void Update()override;
 	void Draw()override;
-	static CEnemy* Create(D3DXVECTOR3 pos,  ENEMY type);
+	static CEnemy* Create(D3DXVECTOR3 pos);
+
+	//static ENEMY* GetStatus() { return &m_type; }
+
 	void SetEnemyType(ENEMY type);
 private:
 	D3DXVECTOR3* m_pos;

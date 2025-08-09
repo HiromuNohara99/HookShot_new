@@ -1,9 +1,9 @@
-/*
-*
-*	ゲームの処理[game.cpp]
-*	Author Nohara Hiromu
-*  
-*/
+//================================
+//
+//	ゲームの処理[game.cpp]
+//	Author Nohara Hiromu
+// 
+//================================
 #include "game.h"
 #include "player.h"
 #include "object2D.h"
@@ -13,6 +13,7 @@
 #include "ObjName.h"
 #include "enity.h"
 #include "block.h"
+#include "enemy.h"
 
 /**
  * .静的メンバの初期化
@@ -44,12 +45,15 @@ HRESULT CGame::Init()
 	m_ObjName->Init();
 	//ステージのロード
 	Load();
-	CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
-	for (int nCnt = 0 ; nCnt < 20; nCnt++)
+	CPlayer::Create(D3DXVECTOR3(0.0f, 50.0f, 0.0f));
+	for (int nL = 0; nL < 10; nL++)
 	{
-		CBlock::Create(D3DXVECTOR3(60.0f*nCnt-30.0f, -50.0f, 0.0f));
+		for (int nCnt = 0; nCnt < 20; nCnt++)
+		{
+			CBlock::Create(D3DXVECTOR3(60.0f * nCnt - 30.0f, -50.0f, 60.0f*nL));
+		}
 	}
-	
+	CEnemy::Create(D3DXVECTOR3(500.0f, 0.0f, 300.0f));
 	CScene::Init();
 
 	return S_OK;
@@ -79,7 +83,6 @@ void CGame::Update()
 void CGame::Draw()
 {
 	CScene::Draw();
-	
 }
 
 /**.
@@ -231,5 +234,4 @@ void CGame::Load()
 
 	fclose(pFile);
 
-	//CFlor::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f),100000.0f,0);
 }

@@ -161,6 +161,8 @@
     <ClCompile Include="object3D.cpp" />
     <ClCompile Include="ObjName.cpp" />
     <ClCompile Include="player.cpp" />
+    <ClCompile Include="player_air.cpp" />
+    <ClCompile Include="player_nomal.cpp" />
     <ClCompile Include="renderer.cpp" />
     <ClCompile Include="scene.cpp" />
   </ItemGroup>
@@ -184,6 +186,8 @@
     <ClInclude Include="object3D.h" />
     <ClInclude Include="ObjName.h" />
     <ClInclude Include="player.h" />
+    <ClInclude Include="player_air.h" />
+    <ClInclude Include="player_nomal.h" />
     <ClInclude Include="renderer.h" />
     <ClInclude Include="scene.h" />
   </ItemGroup>

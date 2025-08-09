@@ -39,20 +39,20 @@ public:
 	virtual void Uninit() = 0;
 	virtual void Update() = 0;
 	virtual void Draw() = 0;
-	static void ReleaseAll();	//全オブジェクトの解放
-	static void UpdateAll();	//全オブジェクトの更新
-	static void DrawAll();		//全オブジェクト描画
+	static void ReleaseAll();			//全オブジェクトの解放
+	static void UpdateAll();			//全オブジェクトの更新
+	static void DrawAll();				//全オブジェクト描画
 	static CObject* GetTop(int nPriority);
 	CObject* GetpNext();
-	TYPE GetType();					//タイプの取得
+	TYPE GetType();						//タイプの取得
 	void SetType(TYPE type);			//タイプの設定
 	void Deathflag();
 protected:
-	void Release();				//自分自身の解放
+	void Release();						//自分自身の解放
 private:
-	TYPE m_Type;							//タイプ
+	TYPE m_Type;						//タイプ
 	int m_nPriority;
-	static int m_nNumAll[5];				//オブジェクトの総数
+	static int m_nNumAll[5];			//オブジェクトの総数
 	static CObject* m_pTop[5];			//先頭オブジェクトのポインタ
 	static CObject* m_pCur[5];			//最後尾オブジェクトのポインタ
 	CObject* m_pPrev;					//前のポインタ

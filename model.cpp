@@ -36,6 +36,7 @@ HRESULT CModel::Init()
 
 	m_pos = D3DXVECTOR3(0.0f, 5.0f, 0.0f);
 	m_rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	m_move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	//Xファイルの読み込み
 	D3DXLoadMeshFromX("",
 		D3DXMESH_SYSTEMMEM,
@@ -76,7 +77,13 @@ void CModel::Uninit()
 //======================================
 void CModel::Update()
 {
-	
+	////減衰
+	m_move.x += (0.0f - m_move.x) * 0.1f;
+	m_move.z += (0.0f - m_move.z) * 0.1f;
+
+	m_pos.x += m_move.x;
+	m_pos.y += m_move.y;
+	m_pos.z += m_move.z;
 }
 
 //======================================
@@ -144,7 +151,7 @@ CModel* CModel::Create()
 }
 
 
-D3DXVECTOR3 * CModel::GetPos()
+D3DXVECTOR3* CModel::GetPos()
 {
 	//座標を入手する
 	return &m_pos;
@@ -192,9 +199,6 @@ void CModel::SetRot(D3DXVECTOR3 rot)
 {
 	m_rot = rot;
 }
-
-
-
 
 //
 //どこのデータを読み込むか

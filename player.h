@@ -7,6 +7,8 @@
 #include "main.h"
 #include "model.h"
 #include "joypad.h"
+#include "player_nomal.h"
+#include "player_air.h"
 
 #ifndef PLAYER_H_
 #define PLAYER_H_
@@ -15,10 +17,10 @@ class CPlayer :public CModel
 {
 public:
 	//プレイヤーのスピード
-	const float NORMAL_SPEED = 2.0f;
-	const float LIFT_SPEED = 2.5f;
-	const float JUMP = 10.0f;
-	const float MAX_SPEED = 1.0f;		//スピードの限界
+	const static float NORMAL_SPEED;
+	const static float LIFT_SPEED;
+	const static float JUMP;
+	const static float MAX_SPEED;		//スピードの限界
 
 	typedef enum
 	{
@@ -49,15 +51,11 @@ public:
 
 	static void SetStatus(STATUS Status) {m_Status = Status;}	//ステータスの情報設定
 
+	static STATUS* GetStatus() { return &m_Status; }
+
 	D3DXVECTOR3* GetHookPos();	//フックショットの位置
 
-
-	//状態:ノーマル
-	void PlayerNomal();
-	void ControlNomal();
-	//状態:空中
-	void PlayerAir();
-	void ControlAir();
+	
 	//状態:フック
 	void PlayerHook();
 	void PlayerHookMove();
@@ -65,6 +63,7 @@ public:
 	void PlayerPull();
 	//状態:共通
 	void ShootHook();
+	void MouseP();	//マウスで一回テレポート
 
 private:
 	D3DXVECTOR3 m_move;							//移動量	
@@ -77,5 +76,8 @@ private:
 	bool bInertia;
 	static bool bHook;
 	float m_HookSpeed; //フックのスピード
+	static CPlayer_Nomal* m_pPlayer_Nomal;
+	static CPlayer_Air* m_pPlayer_Air;
+	
 };
 #endif PLAYER_H_
